@@ -22,3 +22,4 @@ you can see  [here](https://drive.google.com/file/d/1pNz29YFxT_496TRAdBtUTDqLWXp
 | `/api/v1/users/{user_id}/todos/{todo_id}/tasks/`               | POST   | Create a new task                                |
 | `/api/v1/users/{user_id}/todos/{todo_id}/tasks/{task_id}/`     | PUT    | Update details of a specific task                |
 | `/api/v1/users/{user_id}/todos/{todo_id}/tasks/{task_id}/`     | DELETE | Delete a specific task                           |
+| `/api/v1/users/{user_id}/todos/{todo_id}/tasks/{task_id}/`     | PATCH | Change task status                           |
