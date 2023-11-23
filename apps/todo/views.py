@@ -71,7 +71,7 @@ class UsersView(View):
 class TodosView(View):
     def get(self, request: HttpRequest, user_id: int) -> HttpRequest:
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(username=user_id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'user not found.'})
         todos = Todo.objects.filter(user=user)
@@ -84,7 +84,7 @@ class TodosView(View):
     
     def post(self, request: HttpRequest, user_id: int):
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(username=user_id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'user not found.'})
         

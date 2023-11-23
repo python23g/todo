@@ -4,8 +4,9 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     Filters,
+    CallbackQueryHandler
 )
-from BotDetails.handlers import start, userlar, todos
+from BotDetails.handlers import start, userlar, todos, button_click
 
 TOKEN = "6837299511:AAGFaEAKObTznuUQZs0Rulfu9MVL0_HI4p8"
 
@@ -21,7 +22,7 @@ def register_handlers():
     
     dispatcher.add_handler(MessageHandler(Filters.text('Id orqali👤'), userlar))
     dispatcher.add_handler(MessageHandler(Filters.text('🕔Todos'),todos))
-
+    dispatcher.add_handler(CallbackQueryHandler(button_click))
     updater.start_polling()
     updater.idle()
 
