@@ -11,10 +11,24 @@ class TodosView(View):
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'user not found.'})
-        todos = Todo.objects.filter(user=user)
 
         result = []
-        for todo in todos:
+        for todo in user.todos.all():
             result.append(model_to_dict(todo))
+        
+        return JsonResponse(result, safe=False)
+
+
+class TasksView(View):
+    def get(self, request: HttpRequest, user_id: int, todo_id: int) -> HttpRequest:
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'user not found.'})
+        todo = user.todos.get(id=todo_id)
+
+        result = []
+        for task in todo.tasks.all():
+            result.append(model_to_dict(task))
         
         return JsonResponse(result, safe=False)
