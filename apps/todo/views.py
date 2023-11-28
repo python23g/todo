@@ -3,21 +3,13 @@ from django.views import View
 from django.forms import model_to_dict
 from .models import Todo
 from django.contrib.auth.models import User
+from base64 import b64decode
+from django.contrib.auth import authenticate
 
 
 class TodosView(View):
-    def get(self, request: HttpRequest, user_id: int) -> HttpRequest:
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return JsonResponse({'error': 'user not found.'})
-
-        result = []
-        for todo in user.todos.all():
-            result.append(model_to_dict(todo))
-        
-        return JsonResponse(result, safe=False)
-
+    def get(self, request: HttpRequest) -> HttpRequest:
+        pass
 
 class TasksView(View):
     def get(self, request: HttpRequest, user_id: int, todo_id: int) -> HttpRequest:
