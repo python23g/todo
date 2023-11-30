@@ -11,7 +11,9 @@ class TodosView(View):
     def get(self, request: HttpRequest) -> HttpRequest:
         headers = request.headers
 
-        auth = headers['Authorization']
+        auth = headers.get('Authorization')
+        if auth is None:
+            return JsonResponse({'error': 'unauthorized.'}, status=401)
         token = auth.split(" ")[-1]
 
         username, password = b64decode(token).decode().split(':')
@@ -35,6 +37,8 @@ class TasksView(View):
         headers = request.headers
 
         auth = headers['Authorization']
+        if auth is None:
+            return JsonResponse({'error': 'unauthorized.'}, status=401)
         token = auth.split(" ")[-1]
 
         username, password = b64decode(token).decode().split(':')
