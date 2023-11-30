@@ -24,10 +24,10 @@ class UsersView(View):
         data = json.loads(request.body.decode())
 
         try:
-            User.objects.create(
-                username=data['username'],
-                password=data['password'],
-            )
+            user = User(username=data['username'])
+            user.set_password(raw_password=data['password'])
+            user.save()
+            
             return JsonResponse({"message": "created."}, status=201)
         except IntegrityError:
             return JsonResponse({'message': 'error'}, status=404)
