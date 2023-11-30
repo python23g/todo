@@ -9,14 +9,40 @@ from django.contrib.auth import authenticate
 
 class TodosView(View):
     def get(self, request: HttpRequest) -> HttpRequest:
-        pass
+        headers = request.headers
+
+        auth = headers['Authorization']
+        token = auth.split(" ")[-1]
+
+        username, password = b64decode(token).decode().split(':')
+
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            return JsonResponse({'error': 'unauthorized.'}, status=401)
+
+        todos = Todo.objects.filter(user=user)
+
+        result = []
+        for todo in todos:
+            result.append(model_to_dict(todo))
+
+        return JsonResponse(result, safe=False)
+
 
 class TasksView(View):
-    def get(self, request: HttpRequest, user_id: int, todo_id: int) -> HttpRequest:
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return JsonResponse({'error': 'user not found.'})
+    def get(self, request: HttpRequest, todo_id: int) -> HttpRequest:
+        headers = request.headers
+
+        auth = headers['Authorization']
+        token = auth.split(" ")[-1]
+
+        username, password = b64decode(token).decode().split(':')
+
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            return JsonResponse({'error': 'unauthorized.'}, status=401)
         todo = user.todos.get(id=todo_id)
 
         result = []
